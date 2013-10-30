@@ -4,10 +4,10 @@ namespace EasyCSV;
 
 class Reader extends AbstractBase
 {
-    private $headersInFirstRow = true;
-    private $headers;
-    private $line;
-    private $init;
+    protected $headersInFirstRow = true;
+    protected $headers;
+    protected $line;
+    protected $init;
 
     public function __construct($path, $mode = 'r+', $headersInFirstRow = true)
     {
@@ -21,7 +21,7 @@ class Reader extends AbstractBase
         $this->init();
         return $this->headers;
     }
-    
+
     public function getRow()
     {
         $this->init();
@@ -46,7 +46,7 @@ class Reader extends AbstractBase
     {
         return $this->line;
     }
-    
+
     protected function init()
     {
         if (true === $this->init) {
