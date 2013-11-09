@@ -32,7 +32,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array("column1", "column2", "column3"), $reader->getHeaders());
     }
-    
+
     public function getReaders()
     {
         $readerSemiColon = new \EasyCSV\Reader(__DIR__ . '/read_sc.csv');
@@ -41,5 +41,19 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
             array(new \EasyCSV\Reader(__DIR__ . '/read.csv')),
             array($readerSemiColon),
         );
+    }
+
+    public function testCreateFromStream()
+    {
+        $handle = fopen(__DIR__ . '/read.csv', 'r');
+        $reader = new \EasyCsv\Reader($handle);
+        $this->assertEquals(array("column1", "column2", "column3"), $reader->getHeaders());
+    }
+
+    public function testCreateFromContent()
+    {
+        $content = file_get_contents(__DIR__ . '/read.csv');
+        $reader = new \EasyCsv\Reader($content, 'content');
+        $this->assertEquals(array("column1", "column2", "column3"), $reader->getHeaders());
     }
 }

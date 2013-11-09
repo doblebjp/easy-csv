@@ -11,7 +11,17 @@ class Reader extends AbstractBase
 
     public function __construct($path, $mode = 'r+', $headersInFirstRow = true)
     {
-        parent::__construct($path, $mode);
+        if ('content' === $mode) {
+            $fh = fopen('php://temp/maxmemory:' . (5 * 1024 * 1024), 'rw');
+            fwrite($fh, $path);
+            rewind($fh);
+            $this->handle = $fh;
+        } elseif (is_string($path)) {
+            parent::__construct($path, $mode);
+        } elseif ('stream' === get_resource_type($path)) {
+            $this->handle = $path;
+        }
+
         $this->headersInFirstRow = $headersInFirstRow;
         $this->line = 0;
     }
